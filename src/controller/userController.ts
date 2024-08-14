@@ -139,10 +139,38 @@ const UpdateUser = async (req: Request, res: Response, next: NextFunction): Prom
     }
 };
 
+
+const DeleteUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const { _id } = req.body;
+    try {
+
+
+        const user = await Users.findByIdAndDelete(_id)
+        console.log({ user });
+
+        if (!user) throw new Error('User Not Exist!');
+
+        res.status(200).send({
+            success: true,
+            msg: 'Deleted Successfully!',
+            response: {
+                user,
+            },
+        });
+    } catch (err: any) {
+        console.log(err.toString());
+        res.status(400).send({
+            success: false,
+            msg: 'Update Failed!',
+            error: err.message || err,
+        });
+    }
+};
 // Export all the functions
 export {
     loginUsers,
     Singup,
     getAllUsers,
-    UpdateUser
+    UpdateUser,
+    DeleteUser
 };
