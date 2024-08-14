@@ -10,7 +10,7 @@ interface IUser extends Document {
 }
 
 // Define the User Schema
-const UserSchema: Schema = new Schema(
+const UserSchema: Schema<IUser> = new Schema(
   {
     name: {
       type: String,
@@ -44,4 +44,4 @@ const UserSchema: Schema = new Schema(
 // Create the model using the interface and schema
 const Users = mongoose.model<IUser>("User", UserSchema);
 
-module.exports=Users;
+export default Users;

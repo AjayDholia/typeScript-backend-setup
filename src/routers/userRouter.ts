@@ -1,11 +1,14 @@
-var express: any = require("express");
-var { loginUsers, Singup, getAllUsers, UpdateUser } = require("../controller/userController")
-var userRouter = express.Router();
 
-userRouter.post("/login", loginUsers);
-userRouter.post("/signup", Singup);
-userRouter.get("/alluser", getAllUsers);
-userRouter.post("/update", UpdateUser);
+import express, { Router } from 'express';
+import { loginUsers, Singup, getAllUsers, UpdateUser } from '../controller/userController';
 
+const userRouter: Router = express.Router();
 
-module.exports = userRouter;
+// Define routes
+userRouter.post('/login', loginUsers);
+userRouter.post('/signup', Singup);
+userRouter.get('/alluser', getAllUsers);
+userRouter.post('/update', UpdateUser);
+
+// Export the router
+export default userRouter;

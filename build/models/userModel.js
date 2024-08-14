@@ -54,4 +54,4 @@ const UserSchema = new mongoose_1.Schema({
 });
 // Create the model using the interface and schema
 const Users = mongoose_1.default.model("User", UserSchema);
-module.exports = Users;
+exports.default = Users;

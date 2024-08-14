@@ -8,19 +8,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const { jwtConfig } = require("../../mongo/config");
-var jwt = require("jsonwebtoken");
-const { ObjectId } = require("mongodb");
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.validator = void 0;
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const Config_1 = require("../Mongo/Config");
 const validator = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { authorization } = req.headers;
-        const token = authorization.split(" ")[1];
-        let verifiedData = jwt.verify(token, jwtConfig.JWT_PRIVATE_KEY);
+        const authorization = req.headers.authorization || '';
+        const token = authorization.split(' ')[1];
+        if (!token) {
+            res.status(401).send({ success: false, msg: 'No token provided!' });
+            return;
+        }
+        // Verify the token
+        const verifiedData = jsonwebtoken_1.default.verify(token, Config_1.jwtConfig.JWT_PRIVATE_KEY);
         req.user = verifiedData;
         next();
     }
     catch (err) {
-        res.status(400).send({ success: false, msg: "Not Verify!", error: err });
+        res.status(400).send({ success: false, msg: 'Not Verified!', error: err.message || err });
     }
 });
-module.exports = { validator };
+exports.validator = validator;

@@ -1,14 +1,18 @@
-import { mongoConnection } from "./Mongo/Config";
 
-var express : any = require('express')
-const cors = require("cors");
-var morgan = require('morgan')
+import express, { Request, Response, NextFunction } from 'express';
+import cors from 'cors';
+import morgan from 'morgan';
+import { mongoConnection } from './Mongo/Config';
+import rootRouter from './routers/rootRouter';
+
 const app = express();
-var rootRouter = require("./routers/rootRouter");
+const port = 8000;
 
-app.use(morgan('combined'))
+// Morgan middleware for logging
+app.use(morgan('combined'));
 
-app.use((req: any, res: any, next: any) => {
+// CORS setup and allowing all origins
+app.use((req: Request, res: Response, next: NextFunction) => {
     res.header("Access-Control-Allow-Origin", "*");
     next();
 });
@@ -16,12 +20,11 @@ app.use((req: any, res: any, next: any) => {
 app.use(express.json());
 app.use(cors());
 app.use("/api/2024", rootRouter);
-const port = 8000;
-mongoConnection();
-// app.get("/", (req: any, res: any) => {
-//     res.send("hello india")
-// })
 
+// Establish MongoDB connection
+mongoConnection();
+
+// Start the server
 app.listen(port, () => {
-    console.log("just connected successfully ",port)
-})
+    console.log("Server connected successfully on port", port);
+});
